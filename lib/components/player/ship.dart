@@ -9,11 +9,10 @@ import 'package:shmup/engine/game.dart';
 class PlayerShip extends PositionComponent with Hitbox, Collidable implements JoystickListener, HasGameRef<ShmupGame> {
   static const speed = 128.0;
   static const squareSize = 12.0;
+  static Paint white = BasicPalette.white.paint();
 
   double currentSpeed = 0;
   bool isMoving = false;
-
-  static Paint white = BasicPalette.white.paint();
 
   PlayerShip(this.gameRef) {
     x = this.gameRef.canvasSize.x / 2;
