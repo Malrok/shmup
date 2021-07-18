@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
-import 'package:shmup/engine/game.dart';
+import 'package:shmup/engine/widgets/game.widget.dart';
 
 class PlayerShip extends PositionComponent with Hitbox, Collidable implements JoystickListener, HasGameRef<ShmupGame> {
   static const speed = 128.0;
@@ -17,7 +17,7 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
   PlayerShip(this.gameRef) {
     x = this.gameRef.canvasSize.x / 2;
     y = this.gameRef.canvasSize.y - this.gameRef.canvasSize.y * 0.1;
-    
+
     addShape(HitboxRectangle());
   }
 

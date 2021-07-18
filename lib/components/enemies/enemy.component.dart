@@ -2,12 +2,12 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/painting.dart';
-import 'package:shmup/components/player/ship.dart';
-import 'package:shmup/engine/game.dart';
+import 'package:shmup/components/player/ship.component.dart';
+import 'package:shmup/engine/presenter.dart';
 
 typedef MoveEnemyFunction(EnemyShip ship, double dt);
 
-class EnemyShip extends PositionComponent with Hitbox, Collidable implements HasGameRef<ShmupGame> {
+class EnemyShip extends PositionComponent with Hitbox, Collidable {
   static const speed = 96.0;
   static const squareSize = 24.0;
   static Paint white = BasicPalette.white.paint();
@@ -16,7 +16,7 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable implements Has
 
   final MoveEnemyFunction _moveEnemyFunction;
 
-  EnemyShip(Vector2 position, this.gameRef, this._moveEnemyFunction) {
+  EnemyShip(Vector2 position, this._moveEnemyFunction) {
     this.position = position;
     addShape(HitboxRectangle());
   }
@@ -50,13 +50,7 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable implements Has
       // if (this.y > this.gameRef.maxY()) this.y = other.height;
     }
     if (other is ScreenCollidable) {
-      if (this.y > this.gameRef.maxY()) this.gameRef.components.remove(this);
+      if (this.y > other.size.y) ShmupPresenter.instance.enemyDestroyed(this);
     }
   }
-
-  @override
-  ShmupGame gameRef;
-
-  @override
-  bool get hasGameRef => true;
 }
