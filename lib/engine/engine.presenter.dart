@@ -1,21 +1,21 @@
 
 import 'package:flame/components.dart';
-import 'package:shmup/components/enemies/enemy.component.dart';
-import 'package:shmup/components/player/ship.component.dart';
+import 'package:shmup/components/enemy.component.dart';
+import 'package:shmup/components/ship.component.dart';
 import 'package:shmup/engine/move_functions/simple_move_function.dart';
 import 'package:shmup/engine/widgets/game.widget.dart';
 import 'package:shmup/engine/widgets/joystick.widget.dart';
 import 'package:shmup/models/level.model.dart';
-import 'package:shmup/screens/launch.dart';
+import 'package:shmup/screens/launch.screen.dart';
 
 enum GameStates { ready, playing, paused }
 
-class ShmupPresenter {
-  static ShmupPresenter? _instance;
+class EnginePresenter {
+  static EnginePresenter? _instance;
 
   static get instance {
     if (_instance == null) {
-      _instance = ShmupPresenter._();
+      _instance = EnginePresenter._();
     }
     return _instance;
   }
@@ -27,7 +27,7 @@ class ShmupPresenter {
   late Joystick _joystick;
   late LevelModel _currentLevel;
 
-  ShmupPresenter._();
+  EnginePresenter._();
 
   Future<void> init(ShmupGame game) async {
     this._game = game;

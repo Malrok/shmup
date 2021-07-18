@@ -2,8 +2,8 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/painting.dart';
-import 'package:shmup/components/player/ship.component.dart';
-import 'package:shmup/engine/presenter.dart';
+import 'package:shmup/components/ship.component.dart';
+import 'package:shmup/engine/engine.presenter.dart';
 
 typedef MoveEnemyFunction(EnemyShip ship, double dt);
 
@@ -50,7 +50,7 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable {
       // if (this.y > this.gameRef.maxY()) this.y = other.height;
     }
     if (other is ScreenCollidable) {
-      if (this.y > other.size.y) ShmupPresenter.instance.enemyDestroyed(this);
+      if (this.y > other.size.y) EnginePresenter.instance.enemyDestroyed(this);
     }
   }
 }

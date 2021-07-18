@@ -1,13 +1,13 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:shmup/engine/presenter.dart';
+import 'package:shmup/engine/engine.presenter.dart';
 import 'package:shmup/engine/widgets/game.widget.dart';
-import 'package:shmup/screens/launch.dart';
+import 'package:shmup/screens/launch.screen.dart';
 
 Future<void> main() async {
   ShmupGame shmupGame = ShmupGame();
 
-  await ShmupPresenter.instance.init(shmupGame);
+  await EnginePresenter.instance.init(shmupGame);
 
   runApp(
     MaterialApp(
@@ -17,7 +17,7 @@ Future<void> main() async {
           game: shmupGame,
           overlayBuilderMap: {
             LaunchScreen.name: (BuildContext context, ShmupGame game) {
-              return LaunchScreen(() => ShmupPresenter.instance.loadLevel());
+              return LaunchScreen(() => EnginePresenter.instance.loadLevel());
             }
           },
           initialActiveOverlays: [LaunchScreen.name],
