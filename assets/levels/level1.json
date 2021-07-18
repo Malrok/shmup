@@ -1,0 +1,19 @@
+{
+  "enemies": [
+    {
+      "timestamp": 3000,
+      "energy": 1,
+      "sprite": "todo",
+      "score": 10,
+      "startx": 0.5,
+      "starty": 0,
+      "speed": 96.0,
+      "size": 24.0,
+      "path": [
+        {
+
+        }
+      ]
+    }
+  ]
+}

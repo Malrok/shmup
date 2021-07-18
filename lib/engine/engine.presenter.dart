@@ -1,10 +1,13 @@
 
+import 'dart:convert';
+
 import 'package:flame/components.dart';
+import 'package:flutter/services.dart';
 import 'package:shmup/components/enemy.component.dart';
 import 'package:shmup/components/ship.component.dart';
-import 'package:shmup/engine/move_functions/simple_move_function.dart';
 import 'package:shmup/engine/widgets/game.widget.dart';
 import 'package:shmup/engine/widgets/joystick.widget.dart';
+import 'package:shmup/models/enemy.model.dart';
 import 'package:shmup/models/level.model.dart';
 import 'package:shmup/screens/launch.screen.dart';
 
@@ -34,16 +37,22 @@ class EnginePresenter {
   }
 
   Future<void> onLoad() async {
-    this._setState(GameStates.ready);
-  }
-
-  Future<void> loadLevel() async {
-    _currentLevel = LevelModel(number: 1, enemies: 1);
-
     _playerShip = PlayerShip(_game);
 
     _joystick = Joystick(_game);
     _joystick.addObserver(_playerShip);
+
+    this._setState(GameStates.ready);
+  }
+
+  Future<void> loadLevel(int number) async {
+    String data = await rootBundle.loadString('assets/levels/level$number.json');
+    Map<String, dynamic> json = jsonDecode(data);
+
+    _currentLevel = LevelModel.fromJson(json);
+    _currentLevel.number = number;
+
+    _playerShip.resetPosition();
 
     _game.components.clear();
 
@@ -51,10 +60,9 @@ class EnginePresenter {
     _game.add(_joystick);
     _game.add(ScreenCollidable());
 
-    EnemyShip enemy = EnemyShip(Vector2(_game.canvasSize.y / 2, 0), simpleMoveFunction);
-
-
-    _game.add(enemy);
+    for (EnemyModel enemyModel in _currentLevel.enemies) {
+      _game.add(EnemyShip(enemyModel));
+    }
 
     this._setState(GameStates.playing);
   }
@@ -65,9 +73,10 @@ class EnginePresenter {
 
   void enemyDestroyed(EnemyShip enemy) {
     _game.components.remove(enemy);
-    _currentLevel.enemies = _currentLevel.enemies - 1;
 
-    if (_currentLevel.enemies == 0) this._setState(GameStates.ready);
+    _currentLevel.enemies.toList().remove(enemy.model);
+
+    if (_currentLevel.enemies.isEmpty) this._setState(GameStates.ready);
   }
 
   void _setState(GameStates newState) {

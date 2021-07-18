@@ -15,10 +15,15 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
   bool isMoving = false;
 
   PlayerShip(this.gameRef) {
-    x = this.gameRef.canvasSize.x / 2;
-    y = this.gameRef.canvasSize.y - this.gameRef.canvasSize.y * 0.1;
-
+    resetPosition();
     addShape(HitboxRectangle());
+  }
+
+  @override
+  void onMount() {
+    super.onMount();
+    size.setValues(squareSize, squareSize);
+    anchor = Anchor.center;
   }
 
   @override
@@ -37,13 +42,6 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
   }
 
   @override
-  void onMount() {
-    super.onMount();
-    size.setValues(squareSize, squareSize);
-    anchor = Anchor.center;
-  }
-
-  @override
   void joystickAction(JoystickActionEvent event) {
     // TODO: implement joystickAction
   }
@@ -55,11 +53,6 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
       angle = event.angle;
       currentSpeed = speed * event.intensity;
     }
-  }
-
-  void _moveFromAngle(double dt) {
-    final delta = Vector2(cos(angle), sin(angle)) * (currentSpeed * dt);
-    position.add(delta);
   }
 
   @override
@@ -77,4 +70,14 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
 
   @override
   bool get hasGameRef => true;
+
+  void resetPosition() {
+    x = this.gameRef.canvasSize.x / 2;
+    y = this.gameRef.canvasSize.y - this.gameRef.canvasSize.y * 0.1;
+  }
+
+  void _moveFromAngle(double dt) {
+    final delta = Vector2(cos(angle), sin(angle)) * (currentSpeed * dt);
+    position.add(delta);
+  }
 }

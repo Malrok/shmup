@@ -4,19 +4,16 @@ import 'package:flame/palette.dart';
 import 'package:flutter/painting.dart';
 import 'package:shmup/components/ship.component.dart';
 import 'package:shmup/engine/engine.presenter.dart';
+import 'package:shmup/models/enemy.model.dart';
 
 typedef MoveEnemyFunction(EnemyShip ship, double dt);
 
 class EnemyShip extends PositionComponent with Hitbox, Collidable {
-  static const speed = 96.0;
-  static const squareSize = 24.0;
   static Paint white = BasicPalette.white.paint();
 
-  double currentSpeed = 0;
+  EnemyModel model;
 
-  final MoveEnemyFunction _moveEnemyFunction;
-
-  EnemyShip(Vector2 position, this._moveEnemyFunction) {
+  EnemyShip(this.model) {
     this.position = position;
     addShape(HitboxRectangle());
   }
@@ -31,13 +28,13 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable {
   @override
   void update(double dt) {
     super.update(dt);
-    _moveEnemyFunction(this, dt);
+    // _moveEnemyFunction(this, dt);
   }
 
   @override
   void onMount() {
     super.onMount();
-    size.setValues(squareSize, squareSize);
+    size.setValues(model.size, model.size);
     anchor = Anchor.center;
   }
 

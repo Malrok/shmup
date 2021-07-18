@@ -17,7 +17,7 @@ Future<void> main() async {
           game: shmupGame,
           overlayBuilderMap: {
             LaunchScreen.name: (BuildContext context, ShmupGame game) {
-              return LaunchScreen(() => EnginePresenter.instance.loadLevel());
+              return LaunchScreen(() => EnginePresenter.instance.loadLevel(1));
             }
           },
           initialActiveOverlays: [LaunchScreen.name],
