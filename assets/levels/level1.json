@@ -5,13 +5,14 @@
       "energy": 1,
       "sprite": "todo",
       "score": 10,
+      "speed": 100,
       "startx": 0.5,
-      "starty": 0,
-      "speed": 96.0,
+      "starty": -0.2,
       "size": 24.0,
-      "path": [
+      "paths": [
         {
-
+          "vectorx": 0.5,
+          "vectory": 1.2
         }
       ]
     }

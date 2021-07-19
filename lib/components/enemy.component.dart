@@ -1,21 +1,41 @@
+import 'dart:developer';
+
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/painting.dart';
 import 'package:shmup/components/ship.component.dart';
 import 'package:shmup/engine/engine.presenter.dart';
+import 'package:shmup/engine/widgets/game.widget.dart';
 import 'package:shmup/models/enemy.model.dart';
+import 'package:shmup/models/path.model.dart';
 
 typedef MoveEnemyFunction(EnemyShip ship, double dt);
 
-class EnemyShip extends PositionComponent with Hitbox, Collidable {
+class EnemyShip extends PositionComponent with Hitbox, Collidable implements HasGameRef<ShmupGame> {
   static Paint white = BasicPalette.white.paint();
 
   EnemyModel model;
 
-  EnemyShip(this.model) {
-    this.position = position;
+  EnemyShip(this.gameRef, this.model) {
     addShape(HitboxRectangle());
+
+    this.position = position;
+    this.x = model.startx * gameRef.size.x;
+    this.y = model.starty * gameRef.size.y;
+
+    for (PathModel pathModel in model.paths) {
+      addEffect(MoveEffect(
+        path: [
+          Vector2(
+            pathModel.vectorx * gameRef.size.x,
+            pathModel.vectory * gameRef.size.y,
+          ),
+        ],
+        speed: model.speed,
+      ));
+    }
   }
 
   @override
@@ -27,6 +47,7 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable {
 
   @override
   void update(double dt) {
+    // log('update y: $y -- position: $position');
     super.update(dt);
     // _moveEnemyFunction(this, dt);
   }
@@ -50,4 +71,10 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable {
       if (this.y > other.size.y) EnginePresenter.instance.enemyDestroyed(this);
     }
   }
+
+  @override
+  ShmupGame gameRef;
+
+  @override
+  bool get hasGameRef => true;
 }

@@ -61,7 +61,7 @@ class EnginePresenter {
     _game.add(ScreenCollidable());
 
     for (EnemyModel enemyModel in _currentLevel.enemies) {
-      _game.add(EnemyShip(enemyModel));
+      _game.add(EnemyShip(_game, enemyModel));
     }
 
     this._setState(GameStates.playing);
@@ -74,7 +74,7 @@ class EnginePresenter {
   void enemyDestroyed(EnemyShip enemy) {
     _game.components.remove(enemy);
 
-    _currentLevel.enemies.toList().remove(enemy.model);
+    _currentLevel.enemies.removeWhere((element) => element.id == enemy.model.id);
 
     if (_currentLevel.enemies.isEmpty) this._setState(GameStates.ready);
   }
