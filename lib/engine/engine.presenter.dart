@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +29,9 @@ class EnginePresenter {
   GameStates _state = GameStates.ready;
   late PlayerShip _playerShip;
   late Joystick _joystick;
-  late LevelModel _currentLevel;
+  LevelModel? _currentLevel;
+
+  double _levelTimeElapsed = 0;
 
   EnginePresenter._();
 
@@ -45,12 +48,25 @@ class EnginePresenter {
     this._setState(GameStates.ready);
   }
 
+  void update(double dt) {
+    if (_currentLevel != null) {
+      _levelTimeElapsed += dt;
+
+      for (EnemyModel enemyModel in _currentLevel!.enemies) {
+        if (enemyModel.timestamp < _levelTimeElapsed && !enemyModel.hasBeenSet) {
+          enemyModel.hasBeenSet = true;
+          _game.add(EnemyShip(_game, enemyModel));
+        }
+      }
+    }
+  }
+
   Future<void> loadLevel(int number) async {
     String data = await rootBundle.loadString('assets/levels/level$number.json');
     Map<String, dynamic> json = jsonDecode(data);
 
     _currentLevel = LevelModel.fromJson(json);
-    _currentLevel.number = number;
+    _currentLevel!.number = number;
 
     _playerShip.resetPosition();
 
@@ -59,10 +75,6 @@ class EnginePresenter {
     _game.add(_playerShip);
     _game.add(_joystick);
     _game.add(ScreenCollidable());
-
-    for (EnemyModel enemyModel in _currentLevel.enemies) {
-      _game.add(EnemyShip(_game, enemyModel));
-    }
 
     this._setState(GameStates.playing);
   }
@@ -74,15 +86,17 @@ class EnginePresenter {
   void enemyDestroyed(EnemyShip enemy) {
     _game.components.remove(enemy);
 
-    _currentLevel.enemies.removeWhere((element) => element.id == enemy.model.id);
+    _currentLevel!.enemies.removeWhere((element) => element.id == enemy.model.id);
 
-    if (_currentLevel.enemies.isEmpty) this._setState(GameStates.ready);
+    if (_currentLevel!.enemies.isEmpty) this._setState(GameStates.ready);
   }
 
   void _setState(GameStates newState) {
     this._state = newState;
     switch (_state) {
       case GameStates.ready:
+        _currentLevel = null;
+        _levelTimeElapsed = 0;
         _game.overlays.add(LaunchScreen.name);
         break;
       case GameStates.playing:

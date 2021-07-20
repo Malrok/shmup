@@ -2,6 +2,7 @@ import 'package:shmup/models/path.model.dart';
 
 class EnemyModel {
   int id;
+  int timestamp;
   int energy;
   String sprite;
   int score;
@@ -11,8 +12,11 @@ class EnemyModel {
   double size;
   Iterable<PathModel> paths;
 
+  bool hasBeenSet = false;
+
   EnemyModel({
     required this.id,
+    required this.timestamp,
     required this.energy,
     required this.sprite,
     required this.score,
@@ -25,6 +29,7 @@ class EnemyModel {
 
   factory EnemyModel.fromJson(int id, Map<String, dynamic> json) => EnemyModel(
         id: id,
+        timestamp: (json['timestamp'] as int) ~/ 1000,
         energy: json['energy'] as int,
         sprite: json['sprite'] as String,
         score: json['score'] as int,

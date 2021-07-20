@@ -16,6 +16,12 @@ class ShmupGame extends BaseGame with HasDraggableComponents, HasCollidables {
     }
   }
 
+  @override
+  void update(double dt) {
+    EnginePresenter.instance.update(dt);
+    super.update(dt);
+  }
+
   double maxY() {
     return this.canvasSize.y; // - _joystick.;
   }
