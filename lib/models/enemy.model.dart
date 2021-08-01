@@ -2,7 +2,7 @@ import 'package:shmup/models/path.model.dart';
 
 class EnemyModel {
   int id;
-  int timestamp;
+  double timestamp;
   double energy;
   String sprite;
   int score;
@@ -29,7 +29,7 @@ class EnemyModel {
 
   factory EnemyModel.fromJson(int id, Map<String, dynamic> json) => EnemyModel(
         id: id,
-        timestamp: (json['timestamp'] as int) ~/ 1000,
+        timestamp: (json['timestamp'] as int) / 1000,
         energy: json['energy'] as double,
         sprite: json['sprite'] as String,
         score: json['score'] as int,
