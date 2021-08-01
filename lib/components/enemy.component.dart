@@ -2,7 +2,9 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:shmup/components/bullet.component.dart';
 import 'package:shmup/components/ship.component.dart';
 import 'package:shmup/engine/engine.presenter.dart';
 import 'package:shmup/engine/widgets/game.widget.dart';
@@ -60,6 +62,10 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable implements Has
     }
     if (other is ScreenCollidable) {
       if (this.y > other.size.y) EnginePresenter.instance.enemyDestroyed(this);
+    }
+    if (other is Bullet) {
+      this.model.energy -= other.power;
+      if (this.model.energy <= 0) EnginePresenter.instance.enemyDestroyed(this);
     }
   }
 

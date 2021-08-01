@@ -2,7 +2,7 @@
   "enemies": [
     {
       "timestamp": 3000,
-      "energy": 1,
+      "energy": 5.0,
       "sprite": "todo",
       "score": 10,
       "speed": 100,

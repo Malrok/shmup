@@ -88,7 +88,7 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
 
   void _pullTrigger(double dt) {
     if (_weapon.shouldTrigger(dt)) {
-      this.gameRef.add(Bullet(position, Vector2(0, -256), this.gameRef));
+      this.gameRef.add(Bullet(position, Vector2(0, -256), this._weapon.damage, this.gameRef));
     }
   }
 }

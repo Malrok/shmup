@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/painting.dart';
+import 'package:shmup/components/enemy.component.dart';
 import 'package:shmup/engine/widgets/game.widget.dart';
 
 class Bullet extends PositionComponent with Hitbox, Collidable implements HasGameRef<ShmupGame> {
@@ -9,8 +10,9 @@ class Bullet extends PositionComponent with Hitbox, Collidable implements HasGam
   static Paint white = BasicPalette.white.paint();
 
   Vector2 _direction;
+  double power;
 
-  Bullet(Vector2 position, this._direction, this.gameRef) {
+  Bullet(Vector2 position, this._direction, this.power, this.gameRef) {
     this.position = position;
     addShape(HitboxCircle());
   }
@@ -41,6 +43,9 @@ class Bullet extends PositionComponent with Hitbox, Collidable implements HasGam
       if (this.x < 0 || this.x > this.gameRef.size.x || this.y < 0 || this.y > this.gameRef.size.y) {
         this.gameRef.components.remove(this);
       }
+    }
+    if (other is EnemyShip) {
+      this.gameRef.components.remove(this);
     }
   }
 
