@@ -44,13 +44,6 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable implements Has
   }
 
   @override
-  void update(double dt) {
-    // log('update y: $y -- position: $position');
-    super.update(dt);
-    // _moveEnemyFunction(this, dt);
-  }
-
-  @override
   void onMount() {
     super.onMount();
     size.setValues(model.size, model.size);

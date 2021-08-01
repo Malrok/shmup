@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
+import 'package:shmup/components/bullet.component.dart';
 import 'package:shmup/engine/widgets/game.widget.dart';
+import 'package:shmup/models/weapon.model.dart';
 
 class PlayerShip extends PositionComponent with Hitbox, Collidable implements JoystickListener, HasGameRef<ShmupGame> {
   static const speed = 128.0;
@@ -13,10 +15,12 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
 
   double currentSpeed = 0;
   bool isMoving = false;
+  late Weapon _weapon;
 
   PlayerShip(this.gameRef) {
     resetPosition();
     addShape(HitboxRectangle());
+    _weapon = Weapon(1, 3);
   }
 
   @override
@@ -39,6 +43,7 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
     if (isMoving) {
       _moveFromAngle(dt);
     }
+    _pullTrigger(dt);
   }
 
   @override
@@ -79,5 +84,11 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
   void _moveFromAngle(double dt) {
     final delta = Vector2(cos(angle), sin(angle)) * (currentSpeed * dt);
     position.add(delta);
+  }
+
+  void _pullTrigger(double dt) {
+    if (_weapon.shouldTrigger(dt)) {
+      this.gameRef.add(Bullet(position, Vector2(0, -256), this.gameRef));
+    }
   }
 }
