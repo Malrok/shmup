@@ -1,8 +1,6 @@
 import 'package:shmup/models/enemy.model.dart';
 
 class LevelModel {
-  late int number;
-
   List<EnemyModel> enemies;
 
   LevelModel({
@@ -15,8 +13,6 @@ class LevelModel {
     for (int index = 0; index < jsonEnemies.length; index++) {
       enemies.add(EnemyModel.fromJson(index, jsonEnemies[index] as Map<String, dynamic>));
     }
-    return LevelModel(
-      enemies: enemies
-    );
+    return LevelModel(enemies: enemies);
   }
 }

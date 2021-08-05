@@ -15,11 +15,11 @@ enum GameStates { ready, playing, paused }
 class EnginePresenter {
   static EnginePresenter? _instance;
 
-  static get instance {
+  static EnginePresenter get instance {
     if (_instance == null) {
       _instance = EnginePresenter._();
     }
-    return _instance;
+    return _instance!;
   }
 
   late ShmupGame _game;
@@ -27,14 +27,18 @@ class EnginePresenter {
   GameStates _state = GameStates.ready;
   late PlayerShip _playerShip;
   late Joystick _joystick;
+  late int lives;
+  late int score;
+  late int _currentLevelNumber;
   LevelModel? _currentLevel;
-
   double _levelTimeElapsed = 0;
 
   EnginePresenter._();
 
   Future<void> init(ShmupGame game) async {
     this._game = game;
+    this.lives = 3;
+    this.score = 0;
   }
 
   Future<void> onLoad() async {
@@ -60,11 +64,13 @@ class EnginePresenter {
   }
 
   Future<void> loadLevel(int number) async {
-    String data = await rootBundle.loadString('assets/levels/level$number.json');
+    _currentLevelNumber = number;
+    _levelTimeElapsed = 0;
+
+    String data = await rootBundle.loadString('assets/levels/level$_currentLevelNumber.json');
     Map<String, dynamic> json = jsonDecode(data);
 
     _currentLevel = LevelModel.fromJson(json);
-    _currentLevel!.number = number;
 
     _playerShip.resetPosition();
 
@@ -84,9 +90,20 @@ class EnginePresenter {
   void enemyDestroyed(EnemyShip enemy) {
     _game.components.remove(enemy);
 
+    score += enemy.model.score;
+
     _currentLevel!.enemies.removeWhere((element) => element.id == enemy.model.id);
 
     if (_currentLevel!.enemies.isEmpty) this._setState(GameStates.ready);
+  }
+
+  void shipDestroyed() {
+    this.lives--;
+    if (this.lives < 0) {
+      this._setState(GameStates.ready);
+    } else {
+      this.loadLevel(_currentLevelNumber);
+    }
   }
 
   void _setState(GameStates newState) {

@@ -5,6 +5,8 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:shmup/components/bullet.component.dart';
+import 'package:shmup/components/enemy.component.dart';
+import 'package:shmup/engine/engine.presenter.dart';
 import 'package:shmup/engine/widgets/game.widget.dart';
 import 'package:shmup/models/weapon.model.dart';
 
@@ -67,6 +69,9 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
       if (this.x > other.width) this.x = other.width;
       if (this.y < 0) this.y = 0;
       if (this.y > this.gameRef.maxY()) this.y = other.height;
+    }
+    if (other is EnemyShip) {
+      EnginePresenter.instance.shipDestroyed();
     }
   }
 
