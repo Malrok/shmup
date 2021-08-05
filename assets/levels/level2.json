@@ -1,0 +1,52 @@
+{
+  "enemies": [
+    {
+      "timestamp": 2500,
+      "energy": 10.0,
+      "sprite": "todo",
+      "score": 20,
+      "speed": 100,
+      "startx": 0.5,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.5,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 3000,
+      "energy": 10.0,
+      "sprite": "todo",
+      "score": 20,
+      "speed": 100,
+      "startx": 0.4,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.6,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 3500,
+      "energy": 10.0,
+      "sprite": "todo",
+      "score": 20,
+      "speed": 100,
+      "startx": 0.3,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.7,
+          "vectory": 1.2
+        }
+      ]
+    }
+  ]
+}

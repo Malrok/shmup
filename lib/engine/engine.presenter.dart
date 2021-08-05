@@ -12,6 +12,8 @@ import 'package:shmup/screens/launch.screen.dart';
 
 enum GameStates { ready, playing, paused }
 
+const int GAME_LEVELS = 2;
+
 class EnginePresenter {
   static EnginePresenter? _instance;
 
@@ -94,7 +96,13 @@ class EnginePresenter {
 
     _currentLevel!.enemies.removeWhere((element) => element.id == enemy.model.id);
 
-    if (_currentLevel!.enemies.isEmpty) this._setState(GameStates.ready);
+    if (_currentLevel!.enemies.isEmpty) {
+      if (_currentLevelNumber < GAME_LEVELS) {
+        this.loadLevel(_currentLevelNumber + 1);
+      } else {
+        this._setState(GameStates.ready);
+      }
+    }
   }
 
   void shipDestroyed() {
