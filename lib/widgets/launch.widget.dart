@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 typedef void OnPressCallback();
 
-class LaunchScreen extends StatelessWidget {
+class LaunchWidget extends StatelessWidget {
   static final String name = 'launch_screen';
 
   final OnPressCallback onPressed;
 
-  LaunchScreen(this.onPressed);
+  LaunchWidget(this.onPressed);
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ import 'package:flutter/painting.dart';
 import 'package:shmup/components/bullet.component.dart';
 import 'package:shmup/components/ship.component.dart';
 import 'package:shmup/engine/engine.presenter.dart';
-import 'package:shmup/engine/widgets/game.widget.dart';
+import 'package:shmup/engine/shmup.game.dart';
 import 'package:shmup/models/enemy.model.dart';
 import 'package:shmup/models/path.model.dart';
 

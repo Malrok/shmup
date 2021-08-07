@@ -2,15 +2,15 @@ import 'package:flutter/painting.dart';
 import 'package:shmup/engine/engine.presenter.dart';
 import 'package:shmup/engine/shmup.game.dart';
 
-class LivesDisplay {
+class LevelDisplay {
   final ShmupGame game;
   late TextPainter painter;
   late TextStyle textStyle;
   late Offset position;
 
-  int? _lives;
+  int? _levelNumber;
 
-  LivesDisplay(this.game) {
+  LevelDisplay(this.game) {
     painter = TextPainter(
       textAlign: TextAlign.end,
       textDirection: TextDirection.ltr,
@@ -18,7 +18,7 @@ class LivesDisplay {
 
     textStyle = TextStyle(
       color: Color(0xffffffff),
-      fontSize: 12,
+      fontSize: 48,
     );
 
     position = Offset.zero;
@@ -29,18 +29,18 @@ class LivesDisplay {
   }
 
   void update(double t) {
-    if (_lives != EnginePresenter.instance.lives) {
-      _lives = EnginePresenter.instance.lives;
+    if (_levelNumber != EnginePresenter.instance.currentLevelNumber) {
+      _levelNumber = EnginePresenter.instance.currentLevelNumber;
       painter.text = TextSpan(
-        text: 'Lives ${_lives.toString()}',
+        text: 'Level ${_levelNumber.toString()}',
         style: textStyle,
       );
 
       painter.layout();
 
       position = Offset(
-        (7 * game.canvasSize.x / 8) - (painter.width / 2),
-        (game.canvasSize.y * .025) - (painter.height / 2),
+        (game.canvasSize.x / 2) - (painter.width / 2),
+        (game.canvasSize.y / 2) - (painter.height / 2),
       );
     }
   }

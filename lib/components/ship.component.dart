@@ -7,7 +7,7 @@ import 'package:flame/palette.dart';
 import 'package:shmup/components/bullet.component.dart';
 import 'package:shmup/components/enemy.component.dart';
 import 'package:shmup/engine/engine.presenter.dart';
-import 'package:shmup/engine/widgets/game.widget.dart';
+import 'package:shmup/engine/shmup.game.dart';
 import 'package:shmup/models/weapon.model.dart';
 
 class PlayerShip extends PositionComponent with Hitbox, Collidable implements JoystickListener, HasGameRef<ShmupGame> {

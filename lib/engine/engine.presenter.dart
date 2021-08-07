@@ -1,14 +1,17 @@
 import 'dart:convert';
 
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:flutter/services.dart';
 import 'package:shmup/components/enemy.component.dart';
+import 'package:shmup/components/lives-display.component.dart';
+import 'package:shmup/components/score-display.component.dart';
 import 'package:shmup/components/ship.component.dart';
-import 'package:shmup/engine/widgets/game.widget.dart';
-import 'package:shmup/engine/widgets/joystick.widget.dart';
+import 'package:shmup/engine/shmup.game.dart';
+import 'package:shmup/components/joystick.component.dart';
 import 'package:shmup/models/enemy.model.dart';
 import 'package:shmup/models/level.model.dart';
-import 'package:shmup/screens/launch.screen.dart';
+import 'package:shmup/widgets/launch.widget.dart';
 
 enum GameStates { ready, playing, paused }
 
@@ -27,20 +30,26 @@ class EnginePresenter {
   late ShmupGame _game;
 
   GameStates _state = GameStates.ready;
+
   late PlayerShip _playerShip;
   late Joystick _joystick;
+  late ScoreDisplay _scoreDisplay;
+  late LivesDisplay _livesDisplay;
+
   late int lives;
   late int score;
-  late int _currentLevelNumber;
+  late int currentLevelNumber;
+
   LevelModel? _currentLevel;
   double _levelTimeElapsed = 0;
 
   EnginePresenter._();
 
   Future<void> init(ShmupGame game) async {
-    this._game = game;
-    this.lives = 3;
-    this.score = 0;
+    _game = game;
+
+    lives = 3;
+    score = 0;
   }
 
   Future<void> onLoad() async {
@@ -49,12 +58,25 @@ class EnginePresenter {
     _joystick = Joystick(_game);
     _joystick.addObserver(_playerShip);
 
-    this._setState(GameStates.ready);
+    _scoreDisplay = ScoreDisplay(_game);
+    _livesDisplay = LivesDisplay(_game);
+
+    _setState(GameStates.ready);
+  }
+
+  void render(Canvas canvas) {
+    if (_state == GameStates.playing) {
+      _scoreDisplay.render(canvas);
+      _livesDisplay.render(canvas);
+    }
   }
 
   void update(double dt) {
-    if (_currentLevel != null) {
+    if (_state == GameStates.playing) {
       _levelTimeElapsed += dt;
+
+      _scoreDisplay.update(dt);
+      _livesDisplay.update(dt);
 
       for (EnemyModel enemyModel in _currentLevel!.enemies) {
         if (enemyModel.timestamp < _levelTimeElapsed && !enemyModel.hasBeenSet) {
@@ -66,10 +88,10 @@ class EnginePresenter {
   }
 
   Future<void> loadLevel(int number) async {
-    _currentLevelNumber = number;
+    currentLevelNumber = number;
     _levelTimeElapsed = 0;
 
-    String data = await rootBundle.loadString('assets/levels/level$_currentLevelNumber.json');
+    String data = await rootBundle.loadString('assets/levels/level$currentLevelNumber.json');
     Map<String, dynamic> json = jsonDecode(data);
 
     _currentLevel = LevelModel.fromJson(json);
@@ -82,11 +104,11 @@ class EnginePresenter {
     _game.add(_joystick);
     _game.add(ScreenCollidable());
 
-    this._setState(GameStates.playing);
+    _setState(GameStates.playing);
   }
 
   bool isPlaying() {
-    return this._state == GameStates.playing;
+    return _state == GameStates.playing;
   }
 
   void enemyDestroyed(EnemyShip enemy) {
@@ -97,33 +119,33 @@ class EnginePresenter {
     _currentLevel!.enemies.removeWhere((element) => element.id == enemy.model.id);
 
     if (_currentLevel!.enemies.isEmpty) {
-      if (_currentLevelNumber < GAME_LEVELS) {
-        this.loadLevel(_currentLevelNumber + 1);
+      if (currentLevelNumber < GAME_LEVELS) {
+        loadLevel(currentLevelNumber + 1);
       } else {
-        this._setState(GameStates.ready);
+        _setState(GameStates.ready);
       }
     }
   }
 
   void shipDestroyed() {
-    this.lives--;
-    if (this.lives < 0) {
-      this._setState(GameStates.ready);
+    lives--;
+    if (lives < 0) {
+      _setState(GameStates.ready);
     } else {
-      this.loadLevel(_currentLevelNumber);
+      loadLevel(currentLevelNumber);
     }
   }
 
   void _setState(GameStates newState) {
-    this._state = newState;
+    _state = newState;
     switch (_state) {
       case GameStates.ready:
         _currentLevel = null;
         _levelTimeElapsed = 0;
-        _game.overlays.add(LaunchScreen.name);
+        _game.overlays.add(LaunchWidget.name);
         break;
       case GameStates.playing:
-        _game.overlays.remove(LaunchScreen.name);
+        _game.overlays.remove(LaunchWidget.name);
         break;
       case GameStates.paused:
         // TODO: Handle this case.

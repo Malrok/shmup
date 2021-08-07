@@ -1,6 +1,6 @@
 import 'package:flutter/painting.dart';
 import 'package:shmup/engine/engine.presenter.dart';
-import 'package:shmup/engine/widgets/game.widget.dart';
+import 'package:shmup/engine/shmup.game.dart';
 
 class ScoreDisplay {
   final ShmupGame game;

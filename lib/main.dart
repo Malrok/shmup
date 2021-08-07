@@ -2,8 +2,8 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shmup/engine/engine.presenter.dart';
-import 'package:shmup/engine/widgets/game.widget.dart';
-import 'package:shmup/screens/launch.screen.dart';
+import 'package:shmup/engine/shmup.game.dart';
+import 'package:shmup/widgets/launch.widget.dart';
 
 Future<void> main() async {
   ShmupGame shmupGame = ShmupGame();
@@ -21,11 +21,11 @@ Future<void> main() async {
         body: GameWidget(
           game: shmupGame,
           overlayBuilderMap: {
-            LaunchScreen.name: (BuildContext context, ShmupGame game) {
-              return LaunchScreen(() => EnginePresenter.instance.loadLevel(1));
+            LaunchWidget.name: (BuildContext context, ShmupGame game) {
+              return LaunchWidget(() => EnginePresenter.instance.loadLevel(1));
             }
           },
-          initialActiveOverlays: [LaunchScreen.name],
+          initialActiveOverlays: [LaunchWidget.name],
         ),
       ),
     ),
