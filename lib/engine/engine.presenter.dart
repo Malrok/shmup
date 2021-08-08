@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/services.dart';
 import 'package:shmup/components/enemy.component.dart';
+import 'package:shmup/components/level-display.component.dart';
 import 'package:shmup/components/lives-display.component.dart';
 import 'package:shmup/components/score-display.component.dart';
 import 'package:shmup/components/ship.component.dart';
@@ -35,6 +36,7 @@ class EnginePresenter {
   late Joystick _joystick;
   late ScoreDisplay _scoreDisplay;
   late LivesDisplay _livesDisplay;
+  late LevelDisplay _levelDisplay;
 
   late int lives;
   late int score;
@@ -60,6 +62,7 @@ class EnginePresenter {
 
     _scoreDisplay = ScoreDisplay(_game);
     _livesDisplay = LivesDisplay(_game);
+    _levelDisplay = LevelDisplay(_game);
 
     _setState(GameStates.ready);
   }
@@ -68,6 +71,7 @@ class EnginePresenter {
     if (_state == GameStates.playing) {
       _scoreDisplay.render(canvas);
       _livesDisplay.render(canvas);
+      _levelDisplay.render(canvas);
     }
   }
 
@@ -77,6 +81,7 @@ class EnginePresenter {
 
       _scoreDisplay.update(dt);
       _livesDisplay.update(dt);
+      _levelDisplay.update(dt);
 
       for (EnemyModel enemyModel in _currentLevel!.enemies) {
         if (enemyModel.timestamp < _levelTimeElapsed && !enemyModel.hasBeenSet) {
@@ -90,6 +95,8 @@ class EnginePresenter {
   Future<void> loadLevel(int number) async {
     currentLevelNumber = number;
     _levelTimeElapsed = 0;
+
+    _levelDisplay.initialize();
 
     String data = await rootBundle.loadString('assets/levels/level$currentLevelNumber.json');
     Map<String, dynamic> json = jsonDecode(data);
