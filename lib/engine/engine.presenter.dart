@@ -118,10 +118,10 @@ class EnginePresenter {
     return _state == GameStates.playing;
   }
 
-  void enemyDestroyed(EnemyShip enemy) {
+  void enemyDestroyed(EnemyShip enemy, bool byPlayer) {
     _game.components.remove(enemy);
 
-    score += enemy.model.score;
+    if (byPlayer) score += enemy.model.score;
 
     _currentLevel!.enemies.removeWhere((element) => element.id == enemy.model.id);
 

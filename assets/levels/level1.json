@@ -2,7 +2,7 @@
   "enemies": [
     {
       "timestamp": 2500,
-      "energy": 5.0,
+      "energy": 3.0,
       "sprite": "todo",
       "score": 10,
       "speed": 100,
@@ -18,7 +18,7 @@
     },
     {
       "timestamp": 3000,
-      "energy": 5.0,
+      "energy": 3.0,
       "sprite": "todo",
       "score": 10,
       "speed": 100,
@@ -34,7 +34,7 @@
     },
     {
       "timestamp": 3500,
-      "energy": 5.0,
+      "energy": 3.0,
       "sprite": "todo",
       "score": 10,
       "speed": 100,
@@ -44,6 +44,166 @@
       "paths": [
         {
           "vectorx": 0.7,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 5500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.7,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.7,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 6000,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.6,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.6,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 6500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.5,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.5,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 8500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.5,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.5,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 9000,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.4,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.4,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 9500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.3,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.3,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 12500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.4,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.4,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 12500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.6,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.6,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 13500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.2,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.2,
+          "vectory": 1.2
+        }
+      ]
+    },
+    {
+      "timestamp": 13500,
+      "energy": 3.0,
+      "sprite": "todo",
+      "score": 10,
+      "speed": 100,
+      "startx": 0.8,
+      "starty": -0.2,
+      "size": 24.0,
+      "paths": [
+        {
+          "vectorx": 0.8,
           "vectory": 1.2
         }
       ]

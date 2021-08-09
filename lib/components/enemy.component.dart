@@ -5,7 +5,6 @@ import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:shmup/components/bullet.component.dart';
-import 'package:shmup/components/ship.component.dart';
 import 'package:shmup/engine/engine.presenter.dart';
 import 'package:shmup/engine/shmup.game.dart';
 import 'package:shmup/models/enemy.model.dart';
@@ -54,18 +53,12 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable implements Has
 
   @override
   void onCollision(Set<Vector2> points, Collidable other) {
-    if (other is PlayerShip) {
-      // if (this.x < 0) this.x = 0;
-      // if (this.x > other.width) this.x = other.width;
-      // if (this.y < 0) this.y = 0;
-      // if (this.y > this.gameRef.maxY()) this.y = other.height;
-    }
     if (other is ScreenCollidable) {
-      if (this.y > other.size.y) EnginePresenter.instance.enemyDestroyed(this);
+      if (this.y > other.size.y) EnginePresenter.instance.enemyDestroyed(this, false);
     }
     if (other is Bullet) {
       this.model.energy -= other.power;
-      if (this.model.energy <= 0) EnginePresenter.instance.enemyDestroyed(this);
+      if (this.model.energy <= 0) EnginePresenter.instance.enemyDestroyed(this, true);
     }
   }
 

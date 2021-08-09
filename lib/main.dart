@@ -8,7 +8,7 @@ import 'package:shmup/widgets/launch.widget.dart';
 Future<void> main() async {
   ShmupGame shmupGame = ShmupGame();
 
-  await EnginePresenter.instance.init(shmupGame);
+  EnginePresenter.instance.init(shmupGame);
 
   WidgetsFlutterBinding.ensureInitialized();
 
