@@ -5,24 +5,25 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:shmup/components/bullet.component.dart';
-import 'package:shmup/components/enemy.component.dart';
+import 'package:shmup/components/enemy_ship.component.dart';
 import 'package:shmup/engine/engine.presenter.dart';
 import 'package:shmup/engine/shmup.game.dart';
 import 'package:shmup/models/weapon.model.dart';
 
 class PlayerShip extends PositionComponent with Hitbox, Collidable implements JoystickListener, HasGameRef<ShmupGame> {
-  static const speed = 128.0;
+  static const defaultSpeed = 128.0;
   static const squareSize = 12.0;
   static Paint white = BasicPalette.white.paint();
 
+  double maxSpeed = defaultSpeed;
   double currentSpeed = 0;
   bool isMoving = false;
-  late Weapon _weapon;
+  late Weapon weapon;
 
   PlayerShip(this.gameRef) {
     resetPosition();
     addShape(HitboxRectangle());
-    _weapon = Weapon(1, 3);
+    weapon = Weapon(1, 3);
   }
 
   @override
@@ -58,7 +59,7 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
     isMoving = event.directional != JoystickMoveDirectional.idle;
     if (isMoving) {
       angle = event.angle;
-      currentSpeed = speed * event.intensity;
+      currentSpeed = maxSpeed * event.intensity;
     }
   }
 
@@ -92,8 +93,8 @@ class PlayerShip extends PositionComponent with Hitbox, Collidable implements Jo
   }
 
   void _pullTrigger(double dt) {
-    if (_weapon.shouldTrigger(dt)) {
-      this.gameRef.add(Bullet(position, Vector2(0, -256), this._weapon.damage, this.gameRef));
+    if (weapon.shouldTrigger(dt)) {
+      this.gameRef.add(Bullet(position, Vector2(0, -256), this.weapon.damage, this.gameRef));
     }
   }
 }

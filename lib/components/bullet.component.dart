@@ -2,7 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/painting.dart';
-import 'package:shmup/components/enemy.component.dart';
+import 'package:shmup/components/enemy_ship.component.dart';
 import 'package:shmup/engine/shmup.game.dart';
 
 class Bullet extends PositionComponent with Hitbox, Collidable implements HasGameRef<ShmupGame> {

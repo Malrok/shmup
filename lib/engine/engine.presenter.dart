@@ -1,13 +1,15 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/services.dart';
-import 'package:shmup/components/enemy.component.dart';
+import 'package:shmup/components/bonus.component.dart';
+import 'package:shmup/components/enemy_ship.component.dart';
 import 'package:shmup/components/level-display.component.dart';
 import 'package:shmup/components/lives-display.component.dart';
 import 'package:shmup/components/score-display.component.dart';
-import 'package:shmup/components/ship.component.dart';
+import 'package:shmup/components/player_ship.component.dart';
 import 'package:shmup/engine/shmup.game.dart';
 import 'package:shmup/components/joystick.component.dart';
 import 'package:shmup/models/enemy.model.dart';
@@ -41,9 +43,11 @@ class EnginePresenter {
   late int lives;
   late int score;
   late int currentLevelNumber;
+  late int gameSpeed = 64;
 
   LevelModel? _currentLevel;
   double _levelTimeElapsed = 0;
+  double _bonusChances = 0.5;
 
   EnginePresenter._();
 
@@ -119,9 +123,12 @@ class EnginePresenter {
   }
 
   void enemyDestroyed(EnemyShip enemy, bool byPlayer) {
-    _game.components.remove(enemy);
+    if (byPlayer) {
+      score += enemy.model.score;
+      generateBonus(enemy.x, enemy.y);
+    }
 
-    if (byPlayer) score += enemy.model.score;
+    _game.components.remove(enemy);
 
     _currentLevel!.enemies.removeWhere((element) => element.id == enemy.model.id);
 
@@ -130,6 +137,47 @@ class EnginePresenter {
         loadLevel(currentLevelNumber + 1);
       } else {
         _setState(GameStates.ready);
+      }
+    }
+  }
+
+  void generateBonus(double x, double y) {
+    Random random = Random();
+    if (random.nextDouble() <= _bonusChances) {
+      double dice = random.nextDouble();
+      BonusTypes type;
+
+      if (dice >= 0.75) {
+        type = BonusTypes.speed;
+      } else if (dice >= 0.5) {
+        type = BonusTypes.power;
+      } else if (dice >= 0.25) {
+        type = BonusTypes.gun;
+      } else {
+        type = BonusTypes.bomb;
+      }
+
+      _game.components.add(Bonus(type, x, y));
+    }
+  }
+
+  void removeBonus(Bonus bonus, bool consumed) {
+    _game.components.remove(bonus);
+
+    if (consumed) {
+      switch (bonus.type) {
+        case BonusTypes.speed:
+          _playerShip.maxSpeed += bonus.type.getBoost();
+          break;
+        case BonusTypes.power:
+          _playerShip.weapon.damage += bonus.type.getBoost();
+          break;
+        case BonusTypes.gun:
+          // TODO: Handle this case.
+          break;
+        case BonusTypes.bomb:
+          // TODO: Handle this case.
+          break;
       }
     }
   }

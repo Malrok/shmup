@@ -10,10 +10,8 @@ import 'package:shmup/engine/shmup.game.dart';
 import 'package:shmup/models/enemy.model.dart';
 import 'package:shmup/models/path.model.dart';
 
-typedef MoveEnemyFunction(EnemyShip ship, double dt);
-
 class EnemyShip extends PositionComponent with Hitbox, Collidable implements HasGameRef<ShmupGame> {
-  static Paint white = BasicPalette.white.paint();
+  static Paint red = BasicPalette.red.paint();
 
   EnemyModel model;
 
@@ -41,7 +39,7 @@ class EnemyShip extends PositionComponent with Hitbox, Collidable implements Has
   void render(Canvas c) {
     super.render(c);
 
-    c.drawRect(size.toRect(), white);
+    c.drawRect(size.toRect(), red);
   }
 
   @override
