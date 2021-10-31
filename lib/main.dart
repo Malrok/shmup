@@ -12,7 +12,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
   runApp(
     MaterialApp(

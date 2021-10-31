@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:developer' as developer;
 
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame_gamepad/flame_gamepad.dart';
 import 'package:flutter/services.dart';
 import 'package:shmup/components/bonus.component.dart';
 import 'package:shmup/components/enemy_ship.component.dart';
@@ -10,6 +12,7 @@ import 'package:shmup/components/level-display.component.dart';
 import 'package:shmup/components/lives-display.component.dart';
 import 'package:shmup/components/score-display.component.dart';
 import 'package:shmup/components/player_ship.component.dart';
+import 'package:shmup/engine/gamepad.wrapper.dart';
 import 'package:shmup/engine/shmup.game.dart';
 import 'package:shmup/components/joystick.component.dart';
 import 'package:shmup/models/enemy.model.dart';
@@ -35,7 +38,7 @@ class EnginePresenter {
   GameStates _state = GameStates.ready;
 
   late PlayerShip _playerShip;
-  late Joystick _joystick;
+  Joystick? _joystick;
   late ScoreDisplay _scoreDisplay;
   late LivesDisplay _livesDisplay;
   late LevelDisplay _levelDisplay;
@@ -61,12 +64,11 @@ class EnginePresenter {
   Future<void> onLoad() async {
     _playerShip = PlayerShip(_game);
 
-    _joystick = Joystick(_game);
-    _joystick.addObserver(_playerShip);
-
     _scoreDisplay = ScoreDisplay(_game);
     _livesDisplay = LivesDisplay(_game);
     _levelDisplay = LevelDisplay(_game);
+
+    _setGamePad();
 
     _setState(GameStates.ready);
   }
@@ -112,7 +114,7 @@ class EnginePresenter {
     _game.components.clear();
 
     _game.add(_playerShip);
-    _game.add(_joystick);
+    if (_joystick != null) _game.add(_joystick!);
     _game.add(ScreenCollidable());
 
     _setState(GameStates.playing);
@@ -205,6 +207,18 @@ class EnginePresenter {
       case GameStates.paused:
         // TODO: Handle this case.
         break;
+    }
+  }
+
+  Future<void> _setGamePad() async {
+    var gamepad = GamepadWrapper();
+    bool gamepadFound = await gamepad.init();
+
+    if (!gamepadFound) {
+      _joystick = Joystick(_game);
+      _joystick!.addObserver(_playerShip);
+    } else {
+      gamepad.addObserver(_playerShip);
     }
   }
 }

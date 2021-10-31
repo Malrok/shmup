@@ -1,5 +1,6 @@
 name: shmup
 description: A Flutter shoot them up game.
+publish_to: none
 
 version: 0.0.1
 
@@ -11,6 +12,8 @@ dependencies:
     sdk: flutter
   flame: ^1.0.0-releasecandidate.13
   json_annotation: ^4.0.1
+  flame_gamepad:
+    git: https://github.com/Malrok/flame_gamepad.git
 
 dev_dependencies:
   build_runner: ^2.0.6
